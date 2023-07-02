@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+}
+body{
+  margin: 0;
+  padding: 100px;
+  background-color: #0B2434;
+}
+.App{
+  background-color: #F5F5F5;
+  color: black;
+  display: grid;
+  grid-template: -1fr 2fr/ 20px 20px;
+  align-items: center;
+  justify-content: center;
+  height: 600px;
+  max-height: 800px;
+  border-radius: 5px;
+}
+.die{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFF;
+  border-radius: 10px;
+  width: 40px;
+  height: 40px
+}
