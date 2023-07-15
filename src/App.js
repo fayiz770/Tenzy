@@ -44,7 +44,7 @@ function App() {
     if(allHeld && allTheSame){
       setTenzies(true)
       sweetalert({
-        title: ' Congratulations You Won',
+        title: 'عوض خان بدنده شدی',
         icon: 'success',
       })
     }
