@@ -1,21 +1,69 @@
+import React from 'react';
 import './App.css';
 import Die from './Components/Die';
-
+import { nanoid } from 'nanoid';
+import * as sweetalert from 'sweetalert'
+import Confetti from 'react-confetti';
 function App() {
+  function generateNewDie(){
+    return {
+        value: Math.ceil(Math.random() * 6), 
+        isHeld: false,
+        id: nanoid()
+      }
+  }
+  function allNewDice(){
+    const newDice = []
+    for(let i = 0; i < 10; i++){
+      newDice.push(generateNewDie())
+    }
+    return newDice
+  }
+  function roll(){
+    if(!tenzies){
+      setDice(oldDice => oldDice.map(die => {
+        return die.isHeld ? die : generateNewDie()
+      }))
+  }else{
+    setTenzies(false)
+    setDice(allNewDice())
+  }
+  }
+  function holdDice(diceId){
+    setDice(oldDice => oldDice.map(die => {
+      return die.id === diceId ? {...die, isHeld: !die.isHeld}: die
+    }))
+  }
+  const [dice, setDice] = React.useState(allNewDice)
+  const allDice = dice.map(die => <Die key={die.id} value={die.value}  isHeld={die.isHeld} holdDice={() => holdDice(die.id)}/>)
+  const [tenzies, setTenzies] = React.useState(false)
+  React.useEffect(() => {
+    const allHeld = dice.every(die => die.isHeld)
+    const firstDieValue = dice[0].value
+    const allTheSame = dice.every(die => die.value === firstDieValue)
+    if(allHeld && allTheSame){
+      setTenzies(true)
+      sweetalert({
+        title: 'You Won',
+        icon: 'success',
+      })
+    }
+    console.log("Dice Changed")
+  }, [dice])
   return (
-    <div className="App">
-      <Die value="1" />
-      <Die value="2" />
-      <Die value="3" />
-      <Die value="4" />
-      <Die value="5" />
-      <Die value="6" />
-      <Die value="7" />
-      <Die value="8" />
-      <Die value="9" />
-      <Die value="10" />
+    <div className='container'> 
+      <main>
+        {tenzies && <Confetti />}
+        <h1>Tenzies </h1>
+        <p>
+          Roll until all dice are the same. Click each die to freaze it at is current value between rolls.
+        </p>
+        <div className='dice'>
+          {allDice}
+        </div>
+        <button onClick={roll} className='die--button'>{tenzies ? 'Reset' : 'Roll'}</button>
+    </main>
     </div>
   );
 }
-
 export default App;
