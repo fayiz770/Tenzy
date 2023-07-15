@@ -44,7 +44,7 @@ function App() {
     if(allHeld && allTheSame){
       setTenzies(true)
       sweetalert({
-        title: 'You Won',
+        title: ' Congratulations You Won',
         icon: 'success',
       })
     }
